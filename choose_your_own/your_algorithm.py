@@ -27,16 +27,21 @@ plt.ylabel("grade")
 plt.show()
 ################################################################################
 
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score
 
 ### your code here!  name your classifier object clf if you want the 
 ### visualization code (prettyPicture) to show you the decision boundary
+def classify(seed, features_train, labels_train):
+    ### your code goes here!
+    clf = RandomForestClassifier(n_estimators=2, max_depth=2,
+                                 criterion='entropy', random_state=seed)
+    return clf.fit(features_train, labels_train)
 
-
-
-
-
-
-
+classifier = classify(1785, features_train, labels_train)
+predicted_labels = classifier.predict(features_test)
+score = accuracy_score(labels_test, predicted_labels)
+print("Accuracy:" + str(score))
 
 try:
     prettyPicture(clf, features_test, labels_test)
