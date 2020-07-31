@@ -33,6 +33,17 @@
 
 import numpy as np
 
+def updateFeaturesInDict(dictionary, features_names, new_features, keys_sorted=True):
+    keys = dictionary.keys()
+
+    if keys_sorted:
+        keys = sorted(keys)
+
+    for features, key in zip(new_features, keys):
+        for feature, name in zip(features, features_names):
+            dictionary[key].update({name : str(feature)})
+            
+
 def featureFormat( dictionary, features, remove_NaN=True, remove_all_zeroes=True, remove_any_zeroes=False, sort_keys = False):
     """ convert dictionary to numpy array of features
         remove_NaN = True will convert "NaN" string to 0.0
@@ -96,8 +107,11 @@ def featureFormat( dictionary, features, remove_NaN=True, remove_all_zeroes=True
             if 0 in test_list or "NaN" in test_list:
                 append = False
         ### Append the data point if flagged for addition.
+        ### Remove key from the dataset otherwise
         if append:
             return_list.append( np.array(tmp_list) )
+        else:
+            dictionary.pop(key, 0)
 
     return np.array(return_list)
 
