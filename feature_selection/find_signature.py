@@ -33,11 +33,31 @@ features_test  = vectorizer.transform(features_test).toarray()
 ### of data points and a large number of features;
 ### train on only 150 events to put ourselves in this regime
 features_train = features_train[:150].toarray()
-labels_train   = labels_train[:150]
+labels_train = labels_train[:150]
 
 
 
 ### your code goes here
+from time import time
+from sklearn import tree
+from sklearn.metrics import accuracy_score
 
+def classify(features_train, labels_train):
+    ### your code goes here!
+    clf = tree.DecisionTreeClassifier(min_samples_split=40)
+    return clf.fit(features_train, labels_train)
 
+t0 = time()
+classifier = classify(features_train, labels_train)
+print "training time:", round(time()-t0, 3), "s"
+
+t0 = time()
+predicted_labels = classifier.predict(features_test)
+print "prediction time:", round(time()-t0, 3), "s"
+print(accuracy_score(labels_test, predicted_labels))
+
+for i in range(len(classifier.feature_importances_)):
+    importance = classifier.feature_importances_[i]
+    if importance > 0.2:
+        print i, importance, vectorizer.get_feature_names()[i]
 
