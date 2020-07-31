@@ -54,6 +54,15 @@ features_list = [poi, feature_1, feature_2, feature_3]
 data = featureFormat(data_dict, features_list )
 poi, finance_features = targetFeatureSplit( data )
 
+from sklearn.preprocessing import MinMaxScaler
+scaler = MinMaxScaler()
+
+scaler.fit(finance_features)
+
+finance_features = scaler.transform(finance_features)
+
+print(finance_features[0])
+print(scaler.transform([[200000., 1000000., 0]]))
 
 exercised_stock_options = [v["exercised_stock_options"] for v in data_dict.values() if v["exercised_stock_options"] != "NaN"]
 print(min(exercised_stock_options))
